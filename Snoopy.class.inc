@@ -689,8 +689,8 @@ function setcookies()
 		if($fp = fsockopen(
 					$host,
 					$port,
-					&$errno,
-					&$errstr,
+					$errno,
+					$errstr,
 					$this->_fp_timeout
 					))
 		{
