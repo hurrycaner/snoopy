@@ -913,7 +913,7 @@ class Snoopy
 		
 		$headerfile = uniqid(time());
 
-		exec($this->curl_path." -D \"/tmp/$headerfile\"".$cmdline_params." '".$URI."'",$results,$return);
+		exec($this->curl_path." -D \"/tmp/$headerfile\"".$cmdline_params." ".$URI,$results,$return);
 		
 		if($return)
 		{
