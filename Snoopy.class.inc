@@ -5,7 +5,7 @@
 Snoopy - the PHP net client
 Author: Monte Ohrt <monte@ispi.net>
 Copyright (c): 1999-2000 ispi, all rights reserved
-Version: 0.9
+Version: 0.91
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -32,9 +32,6 @@ Lincoln, NE 68510
 
 The latest version of Snoopy can be obtained from:
 http://snoopy.sourceforge.com
-
-Or alternately here:
-http://www.phpinsider.com
 
 *************************************************/
 
@@ -501,11 +498,8 @@ class Snoopy
 		
 			if(preg_match("|^HTTP/|",$currentHeader))
 				$this->response_code = $currentHeader;
-			else
-			{
-				list($key,$val) = preg_split("/: /",$currentHeader,2);
-				$this->headers[$key] = $val;
-			}
+
+			$this->headers[] = $currentHeader;
 		}
 		
 		$this->results = fread($fp, $this->maxlength);

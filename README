@@ -1,10 +1,10 @@
 NAME:
 
-	Snoopy - the PHP net client v0.9
+	Snoopy - the PHP net client v0.91
 	
 SYNOPSIS:
 
-	include "Snoopy.class";
+	include "Snoopy.class.inc";
 	$snoopy = new Snoopy;
 	
 	$snoopy->fetch("http://www.ispi.net/");
@@ -127,7 +127,7 @@ EXAMPLES:
 	Example: 	fetch a web page and display the return headers and
 				the contents of the page (html-escaped):
 	
-	include "Snoopy.class";
+	include "Snoopy.class.inc";
 	$snoopy = new Snoopy;
 	
 	$snoopy->user = "joe";
@@ -150,7 +150,7 @@ EXAMPLES:
 	Example:	submit a form and print out the result headers
 				and html-escaped page:
 
-	include "Snoopy.class";
+	include "Snoopy.class.inc";
 	$snoopy = new Snoopy;
 	
 	$submit_url = "http://lnk.ispi.net/texis/scripts/msearch/netsearch.html";
@@ -176,7 +176,7 @@ EXAMPLES:
 	Example:	showing functionality of all the variables:
 	
 
-	include "Snoopy.class";
+	include "Snoopy.class.inc";
 	$snoopy = new Snoopy;
 
 	$snoopy->proxy_host = "my.proxy.host";

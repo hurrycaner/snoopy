@@ -1,3 +1,8 @@
+Version 0.91
+------------
+    - fixed bug with return headers being overwritten.
+      Please read the NEWS file for important notes. (Monte)
+
 Version 0.9
 -----------
     - added support for read timeouts (Andrei)
