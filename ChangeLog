@@ -1,3 +1,5 @@
+    - fixed BUG # 1097134 : Undefined URI_PARTS["path"] generates Notice
+
 Version 1.2
 -----------
     - fixed BUG # 1014823 : Meta redirect regex inaccurate (gene_wood)
