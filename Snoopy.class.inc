@@ -586,7 +586,7 @@ class Snoopy
 
 	function _striplinks($document)
 	{	
-		preg_match_all("'<a\s+href\s*=\s*			# find <a href=
+		preg_match_all("'<\s*a\s+href\s*=\s*			# find <a href=
 						([\"\'])?					# find single or double quote
 						(?(1) (.*?)\\1 | ([^\s\>]+))		# if quote found, match up to next matching
 													# quote, otherwise match up to next space
@@ -686,6 +686,7 @@ class Snoopy
 
 	function _expandlinks($links,$URI)
 	{
+		
 		preg_match("/^[^\?]+/",$URI,$match);
 
 		$match = preg_replace("|/[^\/\.]+\.[^\/\.]+$|","",$match[0]);
@@ -843,7 +844,7 @@ class Snoopy
 		// no framed content
 		else
 			$this->results = $results;
-
+		
 		return true;
 	}
 
