@@ -45,6 +45,9 @@ class Snoopy
 	var $port			=	80;					// port we are connecting to
 	var $proxy_host		=	"";					// proxy host to use
 	var $proxy_port		=	"";					// proxy port to use
+	var $proxy_user		=	"";					// proxy user to use
+	var $proxy_pass		=	"";					// proxy password to use
+	
 	var $agent			=	"Snoopy v1.01";		// agent we masquerade as
 	var	$referer		=	"";					// referer info to pass
 	var $cookies		=	array();			// array of cookies to pass
@@ -790,6 +793,11 @@ class Snoopy
 			$headers .= "Content-length: ".strlen($body)."\r\n";
 		if(!empty($this->user) || !empty($this->pass))	
 			$headers .= "Authorization: Basic ".base64_encode($this->user.":".$this->pass)."\r\n";
+		
+		//add proxy auth headers
+		if(!empty($this->proxy_user))	
+			$headers .= 'Proxy-Authorization: ' . 'Basic ' . base64_encode($this->proxy_user . ':' . $this->proxy_pass)."\r\n";
+
 
 		$headers .= "\r\n";
 		
@@ -1072,6 +1080,7 @@ class Snoopy
 		if(!empty($this->proxy_host) && !empty($this->proxy_port))
 			{
 				$this->_isproxy = true;
+				
 				$host = $this->proxy_host;
 				$port = $this->proxy_port;
 			}
@@ -1147,7 +1156,7 @@ class Snoopy
 				while(list($key,$val) = each($formvars)) {
 					if (is_array($val) || is_object($val)) {
 						while (list($cur_key, $cur_val) = each($val)) {
-							$postdata .= urlencode($key)."[".urlencode($cur_key)."]=".urlencode($cur_val)."&";
+							$postdata .= urlencode($key)."[]=".urlencode($cur_val)."&";
 						}
 					} else
 						$postdata .= urlencode($key)."=".urlencode($val)."&";
