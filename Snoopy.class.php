@@ -137,6 +137,8 @@ class Snoopy
 			$this->pass = $URI_PARTS["pass"];
 		if (empty($URI_PARTS["query"]))
 			$URI_PARTS["query"] = '';
+		if (empty($URI_PARTS["path"]))
+			$URI_PARTS["path"] = '';
 				
 		switch($URI_PARTS["scheme"])
 		{
@@ -287,6 +289,8 @@ class Snoopy
 			$this->pass = $URI_PARTS["pass"];
 		if (empty($URI_PARTS["query"]))
 			$URI_PARTS["query"] = '';
+		if (empty($URI_PARTS["path"]))
+			$URI_PARTS["path"] = '';
 
 		switch($URI_PARTS["scheme"])
 		{
