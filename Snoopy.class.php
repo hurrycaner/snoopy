@@ -736,6 +736,7 @@ class Snoopy
 		preg_match("/^[^\?]+/",$URI,$match);
 
 		$match = preg_replace("|/[^\/\.]+\.[^\/\.]+$|","",$match[0]);
+		$match = preg_replace("|/$|","",$match);
 				
 		$search = array( 	"|^http://".preg_quote($this->host)."|i",
 							"|^(?!http://)(\/)?(?!mailto:)|i",
@@ -892,6 +893,7 @@ class Snoopy
 		// check if there is a a redirect meta tag
 		
 		if(preg_match("'<meta[\s]*http-equiv[^>]*?content[\s]*=[\s]*[\"\']?\d+;[\s]+URL[\s]*=[\s]*([^\"\']*?)[\"\']?>'i",$results,$match))
+
 		{
 			$this->_redirectaddr = $this->_expandlinks($match[1],$URI);	
 		}
