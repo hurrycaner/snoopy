@@ -1,0 +1,24 @@
+Version 0.9
+-----------
+    - added support for read timeouts (Andrei)
+    - standardized distribution (Andrei)
+
+Version 0.1e
+------------
+    - fixed bug in fetchlinks logic (Monte)
+
+Version 0.1d
+------------
+    - fixed redirect bug without fully qualified url (Monte)
+
+Version 0.1c
+------------
+    - fixed bug on submitting formvars after a redirect (Monte)
+
+Version 0.1b
+------------
+    - fixed bug to allow empty post vars on a submit (Monte)
+
+Version 0.1
+------------
+    - initial release (Monte)
