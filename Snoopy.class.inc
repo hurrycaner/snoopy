@@ -573,7 +573,7 @@ class Snoopy
 						
 		while($currentHeader = fgets($fp,$this->_maxlinelen))
 		{
-			if ($this->_check_timeout($fp))
+			if ($this->read_timeout > 0 && $this->_check_timeout($fp))
 				return false;
 
 			if($currentHeader == "\r\n")
@@ -607,7 +607,7 @@ class Snoopy
 
 		$results = fread($fp, $this->maxlength);
 
-		if ($this->_check_timeout($fp))
+		if ($this->read_timeout > 0 && $this->_check_timeout($fp))
 			return false;
 		
 		// check if there is a a redirect meta tag
