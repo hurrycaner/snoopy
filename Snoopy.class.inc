@@ -1,11 +1,11 @@
-<?
+<?php
 
 /*************************************************
 
 Snoopy - the PHP net client
 Author: Monte Ohrt <monte@ispi.net>
 Copyright (c): 1999-2000 ispi, all rights reserved
-Version: 0.94
+Version: 1.0
 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -45,7 +45,7 @@ class Snoopy
 	var $port			=	80;					// port we are connecting to
 	var $proxy_host		=	"";					// proxy host to use
 	var $proxy_port		=	"";					// proxy port to use
-	var $agent			=	"Snoopy v0.94";		// agent we masquerade as
+	var $agent			=	"Snoopy v1.0";		// agent we masquerade as
 	var	$referer		=	"";					// referer info to pass
 	var $cookies		=	array();			// array of cookies to pass
 												// $cookies["username"]="joe";
@@ -648,16 +648,27 @@ class Snoopy
 		$search = array("'<script[^>]*?>.*?</script>'si",	// strip out javascript
 						"'<[\/\!]*?[^<>]*?>'si",			// strip out html tags
 						"'([\r\n])[\s]+'",					// strip out white space
-						"'&(quote|#34);'i",					// replace html entities
-						"'&(amp|#38);'i",
-						"'&(lt|#60);'i",
-						"'&(gt|#62);'i",
-						"'&(nbsp|#160);'i",
+						"'&(quot|#34|#034|#x22);'i",		// replace html entities
+						"'&(amp|#38|#038|#x26);'i",			// added hexadecimal values
+						"'&(lt|#60|#060|#x3c);'i",
+						"'&(gt|#62|#062|#x3e);'i",
+						"'&(nbsp|#160|#xa0);'i",
 						"'&(iexcl|#161);'i",
 						"'&(cent|#162);'i",
 						"'&(pound|#163);'i",
-						"'&(copy|#169);'i"
-						);				
+						"'&(copy|#169);'i",
+						"'&(reg|#174);'i",
+						"'&(deg|#176);'i",
+						"'&(#39|#039|#x27);'",
+						"'&(euro|#8364);'i",				// europe
+						"'&a(uml|UML);'",					// german
+						"'&o(uml|UML);'",
+						"'&u(uml|UML);'",
+						"'&A(uml|UML);'",
+						"'&O(uml|UML);'",
+						"'&U(uml|UML);'",
+						"'&szlig;'i",
+						);
 		$replace = array(	"",
 							"",
 							"\\1",
@@ -669,7 +680,19 @@ class Snoopy
 							chr(161),
 							chr(162),
 							chr(163),
-							chr(169));
+							chr(169),
+							chr(174),
+							chr(176),
+							chr(39),
+							chr(128),
+							"ä",
+							"ö",
+							"ü",
+							"Ä",
+							"Ö",
+							"Ü",
+							"ß",
+						);
 					
 		$text = preg_replace($search,$replace,$document);
 								

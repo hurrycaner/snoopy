@@ -1,3 +1,5 @@
+Version 1.0
+-----------
 	- added textarea to stripform functionality (Monte)
     - fixed multiple cookie setting problem (Monte)
     - fixed problem where extra text inside <frame src (Monte)

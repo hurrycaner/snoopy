@@ -1,4 +1,4 @@
-RELEASE NOTE: v0.94
+RELEASE NOTE: v1.0
 
 Added fetchform() function for fetching form elements from an html page.
 For SSL support, you must have cURL installed. see http://curl.haxx.se
@@ -6,7 +6,7 @@ for details. Snoopy does not use the cURL library fuctions within PHP,
 as these are not stable as of this Snoopy release.
 Fixed bug with posting arrays of data.
 Added status variable to track http status.
-
+Several other bug fixes, see Changelog.
 RELEASE NOTE: v0.93
 
 A bug was fixed with redirection headers not containing the hostname, doubling up the redirection location URL.
