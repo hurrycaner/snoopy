@@ -5,3 +5,6 @@ Andrei Zmievski <andrei@ispi.net>
 	- miscellaneous fixes
 	- read timeout support
 	- file submission capability
+
+Gene Wood <gene_wood@users.sourceforge.net>
+    - bug fixes
