@@ -969,9 +969,9 @@ class Snoopy
 		if($this->read_timeout > 0)
 			$cmdline_params .= " -m ".$this->read_timeout;
 		
-		$headerfile = uniqid(time());
+		$headerfile = tempnam("/tmp", "sno");
 
-		exec($this->curl_path." -D \"/tmp/$headerfile\"".$cmdline_params." ".$URI,$results,$return);
+		exec($this->curl_path." -D \"$headerfile\"".$cmdline_params." ".$URI,$results,$return);
 		
 		if($return)
 		{
@@ -982,7 +982,7 @@ class Snoopy
 			
 		$results = implode("\r\n",$results);
 		
-		$result_headers = file("/tmp/$headerfile");
+		$result_headers = file("$headerfile");
 						
 		$this->_redirectaddr = false;
 		unset($this->headers);
@@ -1037,7 +1037,7 @@ class Snoopy
 		else
 			$this->results = $results;
 
-		unlink("/tmp/$headerfile");
+		unlink("$headerfile");
 		
 		return true;
 	}
