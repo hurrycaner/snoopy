@@ -135,6 +135,8 @@ class Snoopy
 			$this->user = $URI_PARTS["user"];
 		if (!empty($URI_PARTS["pass"]))
 			$this->pass = $URI_PARTS["pass"];
+		if (empty($URI_PARTS["query"]))
+			$URI_PARTS["query"] = '';
 				
 		switch($URI_PARTS["scheme"])
 		{
@@ -281,7 +283,9 @@ class Snoopy
 			$this->user = $URI_PARTS["user"];
 		if (!empty($URI_PARTS["pass"]))
 			$this->pass = $URI_PARTS["pass"];
-				
+		if (empty($URI_PARTS["query"]))
+			$URI_PARTS["query"] = '';
+
 		switch($URI_PARTS["scheme"])
 		{
 			case "http":
