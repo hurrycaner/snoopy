@@ -620,7 +620,7 @@ class Snoopy
 
 	function _stripform($document)
 	{	
-		preg_match_all("'<\/?(FORM|INPUT|SELECT|(OPTION))[^<>]*>(?(2)(.*(?=<\/?(option|select)[^<>]*>[\r\n]*)|(?=[\r\n]*))|(?=[\r\n]*))'Usi",$document,$elements);
+		preg_match_all("'<\/?(FORM|INPUT|SELECT|TEXTAREA|(OPTION))[^<>]*>(?(2)(.*(?=<\/?(option|select)[^<>]*>[\r\n]*)|(?=[\r\n]*))|(?=[\r\n]*))'Usi",$document,$elements);
 		
 		// catenate the matches
 		$match = implode("\r\n",$elements[0]);
