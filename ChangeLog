@@ -1,5 +1,10 @@
 Version 0.94
+------------
     - Added fetchform() function
+    - Fixed misc issues with frames
+    - Added SSL support via cURL
+    - fixed bug with posting arrays of data
+    - added status variable for http status
 
 Version 0.93
 ------------

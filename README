@@ -1,6 +1,6 @@
 NAME:
 
-	Snoopy - the PHP net client v0.93
+	Snoopy - the PHP net client v0.94
 	
 SYNOPSIS:
 
@@ -29,6 +29,9 @@ SYNOPSIS:
 	echo htmlentities($snoopy->results[1]); 
 	echo htmlentities($snoopy->results[2]); 
 	echo "</PRE>\n";
+
+	$snoopy->fetchform("http://www.altavista.com");
+	print $snoopy->results;
 
 DESCRIPTION:
 
@@ -74,6 +77,13 @@ CLASS METHODS:
 	
 	This behaves exactly like fetch() except that it only returns
 	the text from the page, stripping out html tags and other
+	irrelevant data.		
+
+	fetchform($URI)
+	---------------	
+	
+	This behaves exactly like fetch() except that it only returns
+	the form elements from the page, stripping out html tags and other
 	irrelevant data.		
 
 	fetchlinks($URI)
@@ -129,6 +139,8 @@ CLASS VARIABLES:	(default value in parenthesis)
 					set to 0 to disallow timeouts
 	$timed_out		true if a read operation timed out (requires PHP 4 Beta 4+)
 	$maxframes		number of frames we will follow
+	$status			http status of fetch
+	$curl_path		system path to cURL binary, set to false if none
 	
 
 EXAMPLES:
@@ -245,3 +257,5 @@ THANKS:
 	Special Thanks to:
 	Peter Sorger <sorgo@cool.sk> help fixing a redirect bug
 	Andrei Zmievski <andrei@ispi.net> implementing time out functionality
+	Patric Sandelin <patric@kajen.com> help with fetchform debugging
+	Carmelo <carmelo@meltingsoft.com> misc bug fixes with frames
