@@ -867,7 +867,8 @@ class Snoopy
 		$URI_PARTS = parse_url($URI);
 		if(empty($url))
 			$url = "/";
-		$headers[] = $http_method." ".$url." ".$this->_httpversion;		
+		// GET ... header not needed for curl
+		//$headers[] = $http_method." ".$url." ".$this->_httpversion;		
 		if(!empty($this->agent))
 			$headers[] = "User-Agent: ".$this->agent;
 		if(!empty($this->host))
