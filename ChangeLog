@@ -1,3 +1,4 @@
+	- fixed bug with curl and "&" in the URL
 	- added ability to post files. (Andrei)
 
 Version 0.94
