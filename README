@@ -4,7 +4,7 @@ NAME:
 	
 SYNOPSIS:
 
-	include "Snoopy.class.inc";
+	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
 	
 	$snoopy->fetchtext("http://www.php.net/");
@@ -148,7 +148,7 @@ EXAMPLES:
 	Example: 	fetch a web page and display the return headers and
 				the contents of the page (html-escaped):
 	
-	include "Snoopy.class.inc";
+	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
 	
 	$snoopy->user = "joe";
@@ -171,7 +171,7 @@ EXAMPLES:
 	Example:	submit a form and print out the result headers
 				and html-escaped page:
 
-	include "Snoopy.class.inc";
+	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
 	
 	$submit_url = "http://lnk.ispi.net/texis/scripts/msearch/netsearch.html";
@@ -197,7 +197,7 @@ EXAMPLES:
 	Example:	showing functionality of all the variables:
 	
 
-	include "Snoopy.class.inc";
+	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
 
 	$snoopy->proxy_host = "my.proxy.host";
@@ -232,7 +232,7 @@ EXAMPLES:
 
 	Example: 	fetched framed content and display the results
 	
-	include "Snoopy.class.inc";
+	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
 	
 	$snoopy->maxframes = 5;
@@ -250,7 +250,7 @@ EXAMPLES:
 COPYRIGHT:
 	Copyright(c) 1999,2000 ispi. All rights reserved.
 	This software is released under the GNU General Public License.
-	Please read the disclaimer at the top of the Snoopy.class.inc file.
+	Please read the disclaimer at the top of the Snoopy.class.php file.
 
 
 THANKS:
