@@ -269,6 +269,8 @@ class Snoopy
 	Input:		$URI	the location to post the data
 				$formvars	the formvars to use.
 					format: $formvars["var"] = "val";
+				$formfiles  an array of files to submit
+					format: $formfiles["var"] = "/dir/filename.ext";
 	Output:		$this->results	the text output from the post
 \*======================================================================*/
 
