@@ -1,3 +1,6 @@
+Version 0.94
+    - Added fetchform() function
+
 Version 0.93
 ------------
     - fixed bug with hostname match in a redirect location header

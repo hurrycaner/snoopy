@@ -80,6 +80,19 @@ class Snoopy
 												// set to 0 to disallow timeouts
 	var $timed_out		=	false;				// if a read operation timed out
 	
+	var	$curl_path		=	"/usr/local/bin/curl";
+												// Snoopy will use cURL for fetching
+												// web content if a full system path to
+												// the curl binary is supplied here.
+												// This is primarily for SSL support.
+												// set to false if you do not want to
+												// use curl. See http://curl.haxx.se
+												// for details on installing curl.
+												// Snoopy does *not* use the curl
+												// library functions built into php,
+												// as these functions are not fully
+												// stable as of this Snoopy release.
+	
 	/**** Private variables ****/	
 	
 	var	$_maxlinelen	=	4096;				// max line length (headers)
@@ -319,6 +332,34 @@ class Snoopy
 	}
 
 /*======================================================================*\
+	Function:	fetchform
+	Purpose:	fetch the form elements from a web page
+	Input:		$URI	where you are fetching from
+	Output:		$this->results	the resulting html form
+\*======================================================================*/
+
+	function fetchform($URI)
+	{
+		
+		if ($this->fetch($URI))
+		{			
+
+			if(is_array($this->results))
+			{
+				for($x=0;$x<count($this->results);$x++)
+					$this->results[$x] = $this->_stripform($this->results[$x]);
+			}
+			else
+				$this->results = $this->_stripform($this->results);
+			
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	
+/*======================================================================*\
 	Function:	fetchtext
 	Purpose:	fetch the text from a web page, stripping the links
 	Input:		$URI	where you are fetching from
@@ -440,6 +481,26 @@ class Snoopy
 		return $match;
 	}
 
+/*======================================================================*\
+	Function:	_stripform
+	Purpose:	strip the form elements from an html document
+	Input:		$document	document to strip.
+	Output:		$match		an array of the links
+\*======================================================================*/
+
+	function _stripform($document)
+	{	
+		preg_match_all("'<\/?(FORM|INPUT|SELECT|(OPTION))[^<>]*>(?(2)(.*(<\/?(option|select)[^<>]*>)))'Usi",$document,$elements);
+		
+		// catenate the matches
+		$match = implode("\n",$elements[0]);
+				
+		// return the links
+		return $match;
+	}
+
+	
+	
 /*======================================================================*\
 	Function:	_striptext
 	Purpose:	strip the text from an html document

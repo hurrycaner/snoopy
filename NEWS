@@ -1,3 +1,7 @@
+RELEASE NOTE: v0.94
+
+Added fetchform() function for fetching form elements from an html page.
+
 RELEASE NOTE: v0.93
 
 A bug was fixed with redirection headers not containing the hostname, doubling up the redirection location URL.
