@@ -740,8 +740,14 @@ class Snoopy
 			if(!is_array($this->cookies))
 				$this->cookies = (array)$this->cookies;
 	
-			while(list($cookieKey,$cookieVal) = each($this->cookies))
-				$headers .= "Set-Cookie: ".$cookieKey."=".$cookieVal."\r\n";
+			reset($this->cookies);
+			if ( count($this->cookies) > 0 ) {
+				$cookie_headers .= 'Cookie: ';
+				foreach ( $this->cookies as $cookieKey => $cookieVal ) {
+				$cookie_headers .= $cookieKey."=".urlencode($cookieVal)."; ";
+				}
+				$headers .= substr($cookie_headers,0,-2) . "\r\n";
+			} 
 		}
 		if(!empty($this->rawheaders))
 		{
@@ -882,8 +888,14 @@ class Snoopy
 			if(!is_array($this->cookies))
 				$this->cookies = (array)$this->cookies;
 	
-			while(list($cookieKey,$cookieVal) = each($this->cookies))
-				$headers[] = "Cookie: ".$cookieKey."=".$cookieVal;
+			reset($this->cookies);
+			if ( count($this->cookies) > 0 ) {
+				$cookie_str = 'Cookie: ';
+				foreach ( $this->cookies as $cookieKey => $cookieVal ) {
+				$cookie_str .= $cookieKey."=".urlencode($cookieVal)."; ";
+				}
+				$headers[] = substr($cookie_str,0,-2);
+			}
 		}
 		if(!empty($this->rawheaders))
 		{

@@ -1,6 +1,6 @@
+    - fixed multiple cookie setting problem (Monte)
     - fixed problem where extra text inside <frame src (Monte)
     - fixed problem where extra text inside <a href (Monte)
-    - removed semi-colon from cookie values (Monte)
     - removed http request header from curl fetched
       documents, not needed (Monte)
     - added carriage return to newlines on headers (Monte)
