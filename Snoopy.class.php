@@ -314,7 +314,10 @@ class Snoopy
 								/* follow the redirect */
 								$this->_redirectdepth++;
 								$this->lastredirectaddr=$this->_redirectaddr;
-								$this->submit($this->_redirectaddr,$formvars, $formfiles);
+								if( strpos( $this->_redirectaddr, "?" ) > 0 )
+									$this->fetch($this->_redirectaddr); // the redirect has changed the request method from post to get
+								else
+									$this->submit($this->_redirectaddr,$formvars, $formfiles);
 							}
 						}
 					}
@@ -378,7 +381,10 @@ class Snoopy
 							/* follow the redirect */
 							$this->_redirectdepth++;
 							$this->lastredirectaddr=$this->_redirectaddr;
-							$this->submit($this->_redirectaddr,$formvars, $formfiles);
+							if( strpos( $this->_redirectaddr, "?" ) > 0 )
+								$this->fetch($this->_redirectaddr); // the redirect has changed the request method from post to get
+							else
+								$this->submit($this->_redirectaddr,$formvars, $formfiles);
 						}
 					}
 				}
