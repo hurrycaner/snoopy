@@ -1,3 +1,4 @@
+    - removed semi-colon from cookie values (Monte)
     - removed http request header from curl fetched
       documents, not needed (Monte)
     - added carriage return to newlines on headers (Monte)

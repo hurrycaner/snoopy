@@ -741,7 +741,7 @@ class Snoopy
 				$this->cookies = (array)$this->cookies;
 	
 			while(list($cookieKey,$cookieVal) = each($this->cookies))
-				$headers .= "Set-Cookie: ".$cookieKey."=".$cookieVal.";\r\n";
+				$headers .= "Set-Cookie: ".$cookieKey."=".$cookieVal."\r\n";
 		}
 		if(!empty($this->rawheaders))
 		{
@@ -767,7 +767,7 @@ class Snoopy
 		if ($this->read_timeout > 0)
 			socket_set_timeout($fp, $this->read_timeout);
 		$this->timed_out = false;
-
+		
 		fwrite($fp,$headers.$body,strlen($headers.$body));
 		
 		$this->_redirectaddr = false;
@@ -785,10 +785,10 @@ class Snoopy
 				break;
 						
 			// if a header begins with Location: or URI:, set the redirect
-			if(preg_match("/^(Location: |URI: )/i",$currentHeader))
+			if(preg_match("/^(Location:|URI:)/i",$currentHeader))
 			{
 				// get URL portion of the redirect
-				preg_match("/^(Location: |URI:)(.*)/",chop($currentHeader),$matches);
+				preg_match("/^(Location:|URI:)\s+(.*)/",chop($currentHeader),$matches);
 				// look for :// in the Location header to see if hostname is included
 				if(!preg_match("|\:\/\/|",$matches[2]))
 				{
