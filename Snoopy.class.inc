@@ -729,7 +729,7 @@ class Snoopy
 		$headers = $http_method." ".$url." ".$this->_httpversion."\n";		
 		if(!empty($this->agent))
 			$headers .= "User-Agent: ".$this->agent."\n";
-		if(!empty($this->host))
+		if(!empty($this->host) && !isset($this->rawheaders['Host']))
 			$headers .= "Host: ".$this->host."\n";
 		if(!empty($this->accept))
 			$headers .= "Accept: ".$this->accept."\n";
