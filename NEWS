@@ -1,3 +1,8 @@
+RELEASE NOTE: v1.1
+October 17, 2004
+
+Fixed a number of outstanding bugs.
+
 RELEASE NOTE: v1.01
 
 PHP fixed a bug with fread() which consequently broke the way Snoopy called it. This has been fixed.
