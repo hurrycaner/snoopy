@@ -623,7 +623,7 @@ class Snoopy
 		preg_match_all("'<\/?(FORM|INPUT|SELECT|(OPTION))[^<>]*>(?(2)(.*(?=<\/?(option|select)[^<>]*>[\r\n]*)|(?=[\r\n]*))|(?=[\r\n]*))'Usi",$document,$elements);
 		
 		// catenate the matches
-		$match = implode("\n",$elements[0]);
+		$match = implode("\r\n",$elements[0]);
 				
 		// return the links
 		return $match;
@@ -726,42 +726,42 @@ class Snoopy
 		$URI_PARTS = parse_url($URI);
 		if(empty($url))
 			$url = "/";
-		$headers = $http_method." ".$url." ".$this->_httpversion."\n";		
+		$headers = $http_method." ".$url." ".$this->_httpversion."\r\n";		
 		if(!empty($this->agent))
-			$headers .= "User-Agent: ".$this->agent."\n";
+			$headers .= "User-Agent: ".$this->agent."\r\n";
 		if(!empty($this->host) && !isset($this->rawheaders['Host']))
-			$headers .= "Host: ".$this->host."\n";
+			$headers .= "Host: ".$this->host."\r\n";
 		if(!empty($this->accept))
-			$headers .= "Accept: ".$this->accept."\n";
+			$headers .= "Accept: ".$this->accept."\r\n";
 		if(!empty($this->referer))
-			$headers .= "Referer: ".$this->referer."\n";
+			$headers .= "Referer: ".$this->referer."\r\n";
 		if(!empty($this->cookies))
 		{			
 			if(!is_array($this->cookies))
 				$this->cookies = (array)$this->cookies;
 	
 			while(list($cookieKey,$cookieVal) = each($this->cookies))
-				$headers .= "Set-Cookie: ".$cookieKey."=".$cookieVal.";\n";
+				$headers .= "Set-Cookie: ".$cookieKey."=".$cookieVal.";\r\n";
 		}
 		if(!empty($this->rawheaders))
 		{
 			if(!is_array($this->rawheaders))
 				$this->rawheaders = (array)$this->rawheaders;
 			while(list($headerKey,$headerVal) = each($this->rawheaders))
-				$headers .= $headerKey.": ".$headerVal."\n";
+				$headers .= $headerKey.": ".$headerVal."\r\n";
 		}
 		if(!empty($content_type)) {
 			$headers .= "Content-type: $content_type";
 			if ($content_type == "multipart/form-data")
 				$headers .= "; boundary=".$this->_mime_boundary;
-			$headers .= "\n";
+			$headers .= "\r\n";
 		}
 		if(!empty($body))	
-			$headers .= "Content-length: ".strlen($body)."\n";
+			$headers .= "Content-length: ".strlen($body)."\r\n";
 		if(!empty($this->user) || !empty($this->pass))	
-			$headers .= "Authorization: BASIC ".base64_encode($this->user.":".$this->pass)."\n";
+			$headers .= "Authorization: BASIC ".base64_encode($this->user.":".$this->pass)."\r\n";
 
-		$headers .= "\n";
+		$headers .= "\r\n";
 		
 		// set the read timeout if needed
 		if ($this->read_timeout > 0)
@@ -922,7 +922,7 @@ class Snoopy
 		}
 			
 			
-		$results = implode("\n",$results);
+		$results = implode("\r\n",$results);
 		
 		$result_headers = file("/tmp/$headerfile");
 						
@@ -1118,7 +1118,7 @@ class Snoopy
 					if (is_array($val) || is_object($val)) {
 						while (list($cur_key, $cur_val) = each($val)) {
 							$postdata .= "--".$this->_mime_boundary."\r\n";
-							$postdata .= "Content-Disposition: form-data; name=\"$key[]\"\r\n\r\n";
+							$postdata .= "Content-Disposition: form-data; name=\"$key\[\]\"\r\n\r\n";
 							$postdata .= "$cur_val\r\n";
 						}
 					} else {
