@@ -1147,7 +1147,7 @@ class Snoopy
 				while(list($key,$val) = each($formvars)) {
 					if (is_array($val) || is_object($val)) {
 						while (list($cur_key, $cur_val) = each($val)) {
-							$postdata .= urlencode($key)."[]=".urlencode($cur_val)."&";
+							$postdata .= urlencode($key)."[".urlencode($cur_key)."]=".urlencode($cur_val)."&";
 						}
 					} else
 						$postdata .= urlencode($key)."=".urlencode($val)."&";
