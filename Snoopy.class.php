@@ -83,7 +83,11 @@ class Snoopy
 												// set to 0 to disallow timeouts
 	var $timed_out		=	false;				// if a read operation timed out
 	var	$status			=	0;					// http request status
-	
+
+	var $temp_dir		=	"/tmp";				// temporary directory that the webserver
+												// has permission to write to.
+												// under Windows, this should be C:\temp
+
 	var	$curl_path		=	"/usr/local/bin/curl";
 												// Snoopy will use cURL for fetching
 												// SSL content if a full system path to
@@ -975,9 +979,10 @@ class Snoopy
 		if($this->read_timeout > 0)
 			$cmdline_params .= " -m ".$this->read_timeout;
 		
-		$headerfile = tempnam("/tmp", "sno");
+		$headerfile = tempnam($temp_dir, "sno");
 
-		exec($this->curl_path." -D \"$headerfile\"".$cmdline_params." ".$URI,$results,$return);
+		$safer_URI = strtr( $URI, "\"", " " ); // strip quotes from the URI to avoid shell access
+		exec($this->curl_path." -D \"$headerfile\"".$cmdline_params." \"".$safer_URI."\"",$results,$return);
 		
 		if($return)
 		{
