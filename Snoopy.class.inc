@@ -100,7 +100,8 @@ class Snoopy
 	var $_httpmethod	=	"GET";				// default http request method
 	var $_httpversion	=	"HTTP/1.0";			// default http request version
 	var $_submit_method	=	"POST";				// default submit method
-	var $_submittype	=	"application/x-www-form-urlencoded";	// default submit type
+	var $_submit_type	=	"application/x-www-form-urlencoded";	// default submit type
+	var $_mime_boundary	=   "";					// MIME boundary for multipart/form-data submit type
 	var $_redirectaddr	=	false;				// will be set if page fetched is a redirect
 	var $_redirectdepth	=	0;					// increments on an http redirect
 	var $_frameurls		= 	array();			// frame src urls
@@ -259,20 +260,11 @@ class Snoopy
 	Output:		$this->results	the text output from the post
 \*======================================================================*/
 
-	function submit($URI, $formvars="")
+	function submit($URI, $formvars="", $formfiles="")
 	{
 		unset($postdata);
 		
-		settype($formvars, "array");
-
-		while(list($key,$val) = each($formvars)) {
-			if (is_array($val) || is_object($val)) {
-				while (list($cur_key, $cur_val) = each($val)) {
-					$postdata .= urlencode($cur_key)."=".urlencode($cur_val)."&";
-				}
-			} else
-				$postdata .= urlencode($key)."=".urlencode($val)."&";
-		}
+		$postdata = $this->_prepare_post_body($formvars, $formfiles);
 			
 		$URI_PARTS = parse_url($URI);
 		if (!empty($URI_PARTS["user"]))
@@ -291,13 +283,13 @@ class Snoopy
 					if($this->_isproxy)
 					{
 						// using proxy, send entire URI
-						$this->_httprequest($URI,$fp,$URI,$this->_submit_method,$this->_submittype,$postdata);
+						$this->_httprequest($URI,$fp,$URI,$this->_submit_method,$this->_submit_type,$postdata);
 					}
 					else
 					{
 						$path = $URI_PARTS["path"].($URI_PARTS["query"] ? "?".$URI_PARTS["query"] : "");
 						// no proxy, send only the path
-						$this->_httprequest($path, $fp, $URI, $this->_submit_method, $this->_submittype, $postdata);
+						$this->_httprequest($path, $fp, $URI, $this->_submit_method, $this->_submit_type, $postdata);
 					}
 					
 					$this->_disconnect($fp);
@@ -316,7 +308,7 @@ class Snoopy
 								/* follow the redirect */
 								$this->_redirectdepth++;
 								$this->lastredirectaddr=$this->_redirectaddr;
-								$this->submit($this->_redirectaddr,$formvars);
+								$this->submit($this->_redirectaddr,$formvars, $formfiles);
 							}
 						}
 					}
@@ -354,13 +346,13 @@ class Snoopy
 				if($this->_isproxy)
 				{
 					// using proxy, send entire URI
-					$this->_httpsrequest($URI, $URI, $this->_submit_method, $this->_submittype, $postdata);
+					$this->_httpsrequest($URI, $URI, $this->_submit_method, $this->_submit_type, $postdata);
 				}
 				else
 				{
 					$path = $URI_PARTS["path"].($URI_PARTS["query"] ? "?".$URI_PARTS["query"] : "");
 					// no proxy, send only the path
-					$this->_httpsrequest($path, $URI, $this->_submit_method, $this->_submittype, $postdata);
+					$this->_httpsrequest($path, $URI, $this->_submit_method, $this->_submit_type, $postdata);
 				}
 
 				if($this->_redirectaddr)
@@ -377,7 +369,7 @@ class Snoopy
 							/* follow the redirect */
 							$this->_redirectdepth++;
 							$this->lastredirectaddr=$this->_redirectaddr;
-							$this->submit($this->_redirectaddr,$formvars);
+							$this->submit($this->_redirectaddr,$formvars, $formfiles);
 						}
 					}
 				}
@@ -497,9 +489,9 @@ class Snoopy
 	Output:		$this->results	an array of the links from the post
 \*======================================================================*/
 
-	function submitlinks($URI,$formvars)
+	function submitlinks($URI, $formvars="", $formfiles="")
 	{
-		if($this->submit($URI,$formvars))
+		if($this->submit($URI,$formvars, $formfiles))
 		{			
 			if(is_array($this->results))
 			{
@@ -529,9 +521,9 @@ class Snoopy
 	Output:		$this->results	the text from the web page
 \*======================================================================*/
 
-	function submittext($URI,$formvars)
+	function submittext($URI, $formvars = "", $formfiles = "")
 	{
-		if($this->submit($URI,$formvars))
+		if($this->submit($URI,$formvars, $formfiles))
 		{			
 			if(is_array($this->results))
 			{
@@ -554,6 +546,37 @@ class Snoopy
 			return false;
 	}
 
+	
+
+/*======================================================================*\
+	Function:	set_submit_multipart
+	Purpose:	Set the form submission content type to
+				multipart/form-data
+\*======================================================================*/
+	function set_submit_multipart()
+	{
+		$this->_submit_type = "multipart/form-data";
+	}
+
+	
+/*======================================================================*\
+	Function:	set_submit_normal
+	Purpose:	Set the form submission content type to
+				application/x-www-form-urlencoded
+\*======================================================================*/
+	function set_submit_normal()
+	{
+		$this->_submit_type = "application/x-www-form-urlencoded";
+	}
+
+	
+	
+
+/*======================================================================*\
+	Private functions
+\*======================================================================*/
+	
+	
 /*======================================================================*\
 	Function:	_striplinks
 	Purpose:	strip the hyperlinks from an html document
@@ -726,15 +749,19 @@ class Snoopy
 			while(list($headerKey,$headerVal) = each($this->rawheaders))
 				$headers .= $headerKey.": ".$headerVal."\n";
 		}
-		if(!empty($content_type))
-			$headers .= "Content-type: $content_type\n";
+		if(!empty($content_type)) {
+			$headers .= "Content-type: $content_type";
+			if ($content_type == "multipart/form-data")
+				$headers .= "; boundary=".$this->_mime_boundary;
+			$headers .= "\n";
+		}
 		if(!empty($body))	
 			$headers .= "Content-length: ".strlen($body)."\n";
 		if(!empty($this->user) || !empty($this->pass))	
 			$headers .= "Authorization: BASIC ".base64_encode($this->user.":".$this->pass)."\n";
 
 		$headers .= "\n";
-			
+		
 		// set the read timeout if needed
 		if ($this->read_timeout > 0)
 			socket_set_timeout($fp, $this->read_timeout);
@@ -863,8 +890,12 @@ class Snoopy
 			while(list($headerKey,$headerVal) = each($this->rawheaders))
 				$headers[] = $headerKey.": ".$headerVal;
 		}
-		if(!empty($content_type))
-			$headers[] = "Content-type: $content_type";
+		if(!empty($content_type)) {
+			if ($content_type == "multipart/form-data")
+				$headers[] = "Content-type: $content_type; boundary=".$this->_mime_boundary;
+			else
+				$headers[] = "Content-type: $content_type";
+		}
 		if(!empty($body))	
 			$headers[] = "Content-length: ".strlen($body);
 		if(!empty($this->user) || !empty($this->pass))	
@@ -956,14 +987,15 @@ class Snoopy
 	Function:	setcookies()
 	Purpose:	set cookies for a redirection
 \*======================================================================*/
-function setcookies()
-{
-	for($x=0; $x<count($this->headers); $x++)
+	
+	function setcookies()
 	{
-	if(preg_match("/^set-cookie:[\s]+([^=]+)=([^;]+)/i", $this->headers[$x],$match))
-		$this->cookies[$match[1]] = $match[2];
+		for($x=0; $x<count($this->headers); $x++)
+		{
+		if(preg_match("/^set-cookie:[\s]+([^=]+)=([^;]+)/i", $this->headers[$x],$match))
+			$this->cookies[$match[1]] = $match[2];
+		}
 	}
-}
 
 	
 /*======================================================================*\
@@ -971,6 +1003,7 @@ function setcookies()
 	Purpose:	checks whether timeout has occurred
 	Input:		$fp	file pointer
 \*======================================================================*/
+
 	function _check_timeout($fp)
 	{
 		if ($this->read_timeout > 0) {
@@ -1035,7 +1068,6 @@ function setcookies()
 			return false;
 		}
 	}
-
 /*======================================================================*\
 	Function:	_disconnect
 	Purpose:	disconnect a socket connection
@@ -1047,6 +1079,76 @@ function setcookies()
 		return(fclose($fp));
 	}
 
+	
+/*======================================================================*\
+	Function:	_prepare_post_body
+	Purpose:	Prepare post body according to encoding type
+	Input:		$formvars  - form variables
+				$formfiles - form upload files
+	Output:		post body
+\*======================================================================*/
+	
+	function _prepare_post_body($formvars, $formfiles)
+	{
+		settype($formvars, "array");
+		settype($formfiles, "array");
+
+		if (count($formvars) == 0 && count($formfiles) == 0)
+			return;
+		
+		switch ($this->_submit_type) {
+			case "application/x-www-form-urlencoded":
+				reset($formvars);
+				while(list($key,$val) = each($formvars)) {
+					if (is_array($val) || is_object($val)) {
+						while (list($cur_key, $cur_val) = each($val)) {
+							$postdata .= urlencode($key)."=".urlencode($cur_val)."&";
+						}
+					} else
+						$postdata .= urlencode($key)."=".urlencode($val)."&";
+				}
+				break;
+
+			case "multipart/form-data":
+				$this->_mime_boundary = "Snoopy".md5(uniqid(microtime()));
+				
+				reset($formvars);
+				while(list($key,$val) = each($formvars)) {
+					if (is_array($val) || is_object($val)) {
+						while (list($cur_key, $cur_val) = each($val)) {
+							$postdata .= "--".$this->_mime_boundary."\r\n";
+							$postdata .= "Content-Disposition: form-data; name=\"$key\"\r\n\r\n";
+							$postdata .= "$cur_val\r\n";
+						}
+					} else {
+						$postdata .= "--".$this->_mime_boundary."\r\n";
+						$postdata .= "Content-Disposition: form-data; name=\"$key\"\r\n\r\n";
+						$postdata .= "$val\r\n";
+					}
+				}
+				
+				reset($formfiles);
+				while (list($field_name, $file_names) = each($formfiles)) {
+					settype($file_names, "array");
+					while (list(, $file_name) = each($file_names)) {
+						if (!is_readable($file_name)) continue;
+
+						$fp = fopen($file_name, "r");
+						$file_content = fread($fp, filesize($file_name));
+						fclose($fp);
+						$base_name = basename($file_name);
+
+						$postdata .= "--".$this->_mime_boundary."\r\n";
+						$postdata .= "Content-Disposition: form-data; name=\"$field_name\"; filename=\"$base_name\"\r\n\r\n";
+						$postdata .= "$file_content\r\n";
+					}
+				}
+				$postdata .= "--".$this->_mime_boundary."--\r\n";
+				break;
+		}
+
+		return $postdata;
+	}
 }
 
 ?>
