@@ -1,3 +1,8 @@
+RELEASE NOTE: v1.01
+
+PHP fixed a bug with fread() which consequently broke the way Snoopy called it. This has been fixed.
+Renamed Snoopy.class.inc to Snoopy.class.php for proper file extention.
+
 RELEASE NOTE: v1.0
 
 Added fetchform() function for fetching form elements from an html page.
