@@ -1,4 +1,7 @@
-        - fixed bug with curl, removed single quotes
+    - removed http request header from curl fetched
+      documents, not needed (Monte)
+    - added carriage return to newlines on headers (Monte)
+    - fixed bug with curl, removed single quotes
 	- fixed bug with curl and "&" in the URL
 	- added ability to post files. (Andrei)
 
