@@ -1,3 +1,16 @@
+RELEASE NOTE: v0.92
+March 9, 2000
+
+A bug was fixed with redirection on MS web servers. Also,
+cookies are now passed through redirects.
+
+This release also adds the ability to traverse html framed pages.
+Just set $maxframes to the recursion depth you want to allow,
+and results are returned in $this->results as an array.
+See the README for an example.
+
+-Monte
+
 RELEASE NOTE: v0.91
 February 22, 2000
 

@@ -7,9 +7,6 @@ SYNOPSIS:
 	include "Snoopy.class.inc";
 	$snoopy = new Snoopy;
 	
-	$snoopy->fetch("http://www.ispi.net/");
-	print $snoopy->results;
-	
 	$snoopy->fetchtext("http://www.php.net/");
 	print $snoopy->results;
 	
@@ -25,6 +22,13 @@ SYNOPSIS:
 	$snoopy->submit($submit_url,$submit_vars);
 	print $snoopy->results;
 	
+	$snoopy->maxframes=5;
+	$snoopy->fetch("http://www.ispi.net/");
+	echo "<PRE>\n";
+	echo htmlentities($snoopy->results[0]); 
+	echo htmlentities($snoopy->results[1]); 
+	echo htmlentities($snoopy->results[2]); 
+	echo "</PRE>\n";
 
 DESCRIPTION:
 
@@ -44,6 +48,8 @@ DESCRIPTION:
 	* supports browser redirects, and controlled depth of redirects
 	* expands fetched links to fully qualified URLs (default)
 	* easily submit form data and retrieve the results
+	* supports following html frames (added v0.92)
+	* supports passing cookies on redirects (added v0.92)
 	
 	
 REQUIREMENTS:
@@ -60,6 +66,8 @@ CLASS METHODS:
 	This is the method used for fetching the contents of a web page.
 	$URI is the fully qualified URL of the page to fetch.
 	The results of the fetch are stored in $this->results.
+	If you are fetching frames, then $this->results
+	contains each frame fetched in an array.
 		
 	fetchtext($URI)
 	---------------	
@@ -120,6 +128,7 @@ CLASS VARIABLES:	(default value in parenthesis)
 	$read_timeout	timeout on read operations (requires PHP 4 Beta 4+)
 					set to 0 to disallow timeouts
 	$timed_out		true if a read operation timed out (requires PHP 4 Beta 4+)
+	$maxframes		number of frames we will follow
 	
 
 EXAMPLES:
@@ -209,6 +218,23 @@ EXAMPLES:
 		echo "error fetching document: ".$snoopy->error."\n";
 
 
+	Example: 	fetched framed content and display the results
+	
+	include "Snoopy.class.inc";
+	$snoopy = new Snoopy;
+	
+	$snoopy->maxframes = 5;
+	
+	if($snoopy->fetch("http://www.ispi.net/"))
+	{
+		echo "<PRE>".htmlspecialchars($snoopy->results[0])."</PRE>\n";
+		echo "<PRE>".htmlspecialchars($snoopy->results[1])."</PRE>\n";
+		echo "<PRE>".htmlspecialchars($snoopy->results[2])."</PRE>\n";
+	}
+	else
+		echo "error fetching document: ".$snoopy->error."\n";
+
+
 COPYRIGHT:
 	Copyright(c) 1999,2000 ispi. All rights reserved.
 	This software is released under the GNU General Public License.
@@ -218,3 +244,4 @@ COPYRIGHT:
 THANKS:
 	Special Thanks to:
 	Peter Sorger <sorgo@cool.sk> help fixing a redirect bug
+	Andrei Zmievski <andrei@ispi.net> implementing time out functionality

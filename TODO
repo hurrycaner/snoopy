@@ -3,7 +3,6 @@
   but it should be fairly straightforward)
 * expand links, image tags, and form actions to fully
   qualified URLs
-* support framed invironments
 
 Bugs
 ----

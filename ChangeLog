@@ -1,3 +1,9 @@
+Version 0.92
+------------
+    - fixed redirect bug with MS web server
+    - added ability to pass set cookies through redirects
+    - added ability to traverse html frames
+
 Version 0.91
 ------------
     - fixed bug with return headers being overwritten.

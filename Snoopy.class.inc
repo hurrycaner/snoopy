@@ -5,7 +5,7 @@
 Snoopy - the PHP net client
 Author: Monte Ohrt <monte@ispi.net>
 Copyright (c): 1999-2000 ispi, all rights reserved
-Version: 0.91
+Version: 0.92
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -26,7 +26,7 @@ monte@ispi.net
 
 Or, write to:
 Monte Ohrt
-CTO, ispi of Lincoln
+CTO, ispi
 237 S. 70th suite 220
 Lincoln, NE 68510
 
@@ -40,12 +40,12 @@ class Snoopy
 	/**** Public variables ****/
 	
 	/* user definable vars */
-	
+
 	var $host			=	"www.php.net";		// host name we are connecting to
 	var $port			=	80;					// port we are connecting to
 	var $proxy_host		=	"";					// proxy host to use
 	var $proxy_port		=	"";					// proxy port to use
-	var $agent			=	"Snoopy v0.1";		// agent we masquerade as
+	var $agent			=	"Snoopy v0.92";		// agent we masquerade as
 	var	$referer		=	"";					// referer info to pass
 	var $cookies		=	array();			// array of cookies to pass
 												// $cookies["username"]="joe";
@@ -54,15 +54,21 @@ class Snoopy
 
 	var $maxredirs		=	5;					// http redirection depth maximum. 0 = disallow
 	var	$offsiteok		=	true;				// allows redirection off-site
+	var $maxframes		=	0;					// frame content depth maximum. 0 = disallow
 	var $expandlinks	=	true;				// expand links to fully qualified URLs.
 												// this only applies to fetchlinks()
 												// or submitlinks()
+	var $passcookies	=	true;				// pass set cookies back through redirects
+												// NOTE: this currently does not respect
+												// dates, domains or paths.
 	
 	var	$user			=	"";					// user for http authentication
 	var	$pass			=	"";					// password for http authentication
 	
 	// http accept types
 	var $accept			=	"image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*";
+	
+	var $results		=	"";					// where the content is put
 		
 	var $error			=	"";					// error messages sent here
 	var	$response_code	=	"";					// response code returned from server
@@ -83,6 +89,8 @@ class Snoopy
 	var $_submittype	=	"application/x-www-form-urlencoded";	// default submit type
 	var $_redirectaddr	=	false;				// will be set if page fetched is a redirect
 	var $_redirectdepth	=	0;					// increments on an http redirect
+	var $_frameurls		= 	array();			// frame src urls
+	var $_framedepth	=	0;					// increments on frame depth
 	
 	var $_isproxy		=	false;				// set if using a proxy server
 	var $_fp_timeout	=	30;					// timeout for socket connection
@@ -142,7 +150,23 @@ class Snoopy
 							}
 						}
 					}
-					
+
+					if($this->_framedepth < $this->maxframes && count($this->_frameurls) > 0)
+					{
+						$frameurls = $this->_frameurls;
+						$this->_frameurls = array();
+						
+						while(list(,$frameurl) = each($frameurls))
+						{
+							if($this->_framedepth < $this->maxframes)
+							{
+								$this->fetch($frameurl);
+								$this->_framedepth++;
+							}
+							else
+								break;
+						}
+					}					
 				}
 				else
 				{
@@ -222,6 +246,23 @@ class Snoopy
 							}
 						}
 					}
+
+					if($this->_framedepth < $this->maxframes && count($this->_frameurls) > 0)
+					{
+						$frameurls = $this->_frameurls;
+						$this->_frameurls = array();
+						
+						while(list(,$frameurl) = each($frameurls))
+						{														
+							if($this->_framedepth < $this->maxframes)
+							{
+								$this->fetch($frameurl);
+								$this->_framedepth++;
+							}
+							else
+								break;
+						}
+					}					
 					
 				}
 				else
@@ -252,7 +293,13 @@ class Snoopy
 		if ($this->fetch($URI))
 		{			
 
-			$this->results = $this->_striplinks($this->results);
+			if(is_array($this->results))
+			{
+				for($x=0;$x<count($this->results);$x++)
+					$this->results[$x] = $this->_striplinks($this->results[$x]);
+			}
+			else
+				$this->results = $this->_striplinks($this->results);
 
 			if($this->expandlinks)
 				$this->results = $this->_expandlinks($this->results, $URI);
@@ -273,7 +320,13 @@ class Snoopy
 	{
 		if($this->fetch($URI))
 		{			
-			$this->results = $this->_striptext($this->results);
+			if(is_array($this->results))
+			{
+				for($x=0;$x<count($this->results);$x++)
+					$this->results[$x] = $this->_striptext($this->results[$x]);
+			}
+			else
+				$this->results = $this->_striptext($this->results);
 			return true;
 		}
 		else
@@ -291,9 +344,21 @@ class Snoopy
 	{
 		if($this->submit($URI,$formvars))
 		{			
-			$this->results = $this->_striplinks($this->results);
-			if($this->expandlinks)
-				$this->results = $this->_expandlinks($this->results,$URI);
+			if(is_array($this->results))
+			{
+				for($x=0;$x<count($this->results);$x++)
+				{
+					$this->results[$x] = $this->_striplinks($this->results[$x]);
+					if($this->expandlinks)
+						$this->results[$x] = $this->_expandlinks($this->results[$x],$URI);
+				}
+			}
+			else
+			{
+				$this->results = $this->_striplinks($this->results);
+				if($this->expandlinks)
+					$this->results = $this->_expandlinks($this->results,$URI);
+			}
 			return true;
 		}
 		else
@@ -311,7 +376,21 @@ class Snoopy
 	{
 		if($this->submit($URI,$formvars))
 		{			
-			$this->results = $this->_striptext($this->results);
+			if(is_array($this->results))
+			{
+				for($x=0;$x<count($this->results);$x++)
+				{
+					$this->results[$x] = $this->_striptext($this->results[$x]);
+					if($this->expandlinks)
+						$this->results[$x] = $this->_expandlinks($this->results[$x],$URI);
+				}
+			}
+			else
+			{
+				$this->results = $this->_striptext($this->results);
+				if($this->expandlinks)
+					$this->results = $this->_expandlinks($this->results,$URI);
+			}
 			return true;
 		}
 		else
@@ -440,6 +519,10 @@ class Snoopy
 	
 	function _httprequest($url,$fp,$URI,$http_method,$content_type="",$body="")
 	{
+		if($this->passcookies && $this->_redirectaddr)
+			$this->setcookies();
+			
+		$URI_PARTS = parse_url($URI);
 		if(empty($url))
 			$url = "/";
 		$headers = $http_method." ".$url." ".$this->_httpversion."\n";		
@@ -452,9 +535,10 @@ class Snoopy
 		if(!empty($this->referer))
 			$headers .= "Referer: ".$this->referer."\n";
 		if(!empty($this->cookies))
-		{
+		{			
 			if(!is_array($this->cookies))
 				$this->cookies = (array)$this->cookies;
+	
 			while(list($cookieKey,$cookieVal) = each($this->cookies))
 				$headers .= "Cookie: ".$cookieKey."=".$cookieVal."\n";
 		}
@@ -473,7 +557,7 @@ class Snoopy
 			$headers .= "Authorization: BASIC ".base64_encode($this->user.":".$this->pass)."\n";
 
 		$headers .= "\n";
-
+			
 		// set the read timeout if needed
 		if ($this->read_timeout > 0)
 			socket_set_timeout($fp, $this->read_timeout);
@@ -494,28 +578,72 @@ class Snoopy
 						
 			// if a header begins with Location: or URI:, set the redirect
 			if(preg_match("/^(Location: |URI: )/i",$currentHeader))
-				$this->_redirectaddr = substr(chop($currentHeader), 10);
+			{
+				// get URL portion of the redirect
+				preg_match("/^(Location: |URI:)(.*)/",chop($currentHeader),$matches);
+				if(!preg_match("|".$this->host."|",$matches[2]))
+				{
+					// no host in the path, so prepend
+					$this->_redirectaddr = $URI_PARTS["scheme"]."://".$this->host.":".$this->port;
+					// eliminate double slash
+					if(!preg_match("|^/|",$matches[2]))
+							$this->_redirectaddr .= "/".$matches[2];
+					else
+							$this->_redirectaddr .= $matches[2];
+				}
+				else
+					$this->_redirectaddr = $matches[2];
+			}
 		
 			if(preg_match("|^HTTP/|",$currentHeader))
 				$this->response_code = $currentHeader;
 
 			$this->headers[] = $currentHeader;
 		}
-		
-		$this->results = fread($fp, $this->maxlength);
+
+		$results = fread($fp, $this->maxlength);
 
 		if ($this->_check_timeout($fp))
 			return false;
 		
 		// check if there is a a redirect meta tag
 		
-		if(preg_match("'<meta[\s]*http-equiv[^>]*?content[\s]*=[\s]*[\"\']?\d+;[\s]+URL[\s]*=[\s]*([^\"\']*?)[\"\']?>'i",$this->results,$match))
+		if(preg_match("'<meta[\s]*http-equiv[^>]*?content[\s]*=[\s]*[\"\']?\d+;[\s]+URL[\s]*=[\s]*([^\"\']*?)[\"\']?>'i",$results,$match))
 		{
 			$this->_redirectaddr = $this->_expandlinks($match[1],$URI);	
 		}
-		
+
+		// have we hit our frame depth and is there frame src to fetch?
+		if(($this->_framedepth < $this->maxframes) && preg_match_all("'<frame[\s]*src[\s]*=[\'\"]?([^\'\"\>]+)'i",$results,$match))
+		{
+			$this->results[] = $results;
+			for($x=0; $x<count($match[1]); $x++)
+				$this->_frameurls[] = $this->_expandlinks($match[1][$x],$URI_PARTS["scheme"]."://".$this->host);
+		}
+		// have we already fetched framed content?
+		elseif(is_array($this->results))
+			$this->results[] = $results;
+		// no framed content
+		else
+			$this->results = $results;
+
 		return true;
 	}
+
+
+/*======================================================================*\
+	Function:	setcookies()
+	Purpose:	set cookies for a redirection
+\*======================================================================*/
+function setcookies()
+{
+	for($x=0; $x<count($this->headers); $x++)
+	{
+	if(preg_match("/^set-cookie:[\s]+([^=]+)=([^;]+)/i", $this->headers[$x],$match))
+		$this->cookies[$match[1]] = $match[2];
+	}
+}
+
 	
 /*======================================================================*\
 	Function:	_check_timeout
