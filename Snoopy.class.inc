@@ -5,7 +5,7 @@
 Snoopy - the PHP net client
 Author: Monte Ohrt <monte@ispi.net>
 Copyright (c): 1999-2000 ispi, all rights reserved
-Version: 0.92
+Version: 0.93
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ class Snoopy
 	var $port			=	80;					// port we are connecting to
 	var $proxy_host		=	"";					// proxy host to use
 	var $proxy_port		=	"";					// proxy port to use
-	var $agent			=	"Snoopy v0.92";		// agent we masquerade as
+	var $agent			=	"Snoopy v0.93";		// agent we masquerade as
 	var	$referer		=	"";					// referer info to pass
 	var $cookies		=	array();			// array of cookies to pass
 												// $cookies["username"]="joe";

@@ -1,3 +1,8 @@
+Version 0.93
+------------
+    - fixed bug with hostname match in a redirect location header
+    - added $lastredirectaddr variable
+
 Version 0.92
 ------------
     - fixed redirect bug with MS web server

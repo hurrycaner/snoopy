@@ -1,13 +1,15 @@
+RELEASE NOTE: v0.93
+
+A bug was fixed with redirection headers not containing the hostname, doubling up the redirection location URL.
+
+There is also a new variable, $lastredirectaddr that contains the last redirection URL.
+
 RELEASE NOTE: v0.92
 March 9, 2000
 
-A bug was fixed with redirection on MS web servers. Also,
-cookies are now passed through redirects.
+A bug was fixed with redirection on MS web servers. Also, cookies are now passed through redirects.
 
-This release also adds the ability to traverse html framed pages.
-Just set $maxframes to the recursion depth you want to allow,
-and results are returned in $this->results as an array.
-See the README for an example.
+This release also adds the ability to traverse html framed pages. Just set $maxframes to the recursion depth you want to allow, and results are returned in $this->results as an array. See the README for an example.
 
 -Monte
 
