@@ -140,6 +140,7 @@ CLASS VARIABLES:	(default value in parenthesis)
 	$timed_out		true if a read operation timed out (requires PHP 4 Beta 4+)
 	$maxframes		number of frames we will follow
 	$status			http status of fetch
+	$temp_dir		temp directory that the webserver can write to. (/tmp)
 	$curl_path		system path to cURL binary, set to false if none
 	
 
