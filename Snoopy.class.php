@@ -1046,7 +1046,7 @@ class Snoopy
 		for($x=0; $x<count($this->headers); $x++)
 		{
 		if(preg_match('/^set-cookie:[\s]+([^=]+)=([^;]+)/i', $this->headers[$x],$match))
-			$this->cookies[$match[1]] = $match[2];
+			$this->cookies[$match[1]] = urldecode($match[2]);
 		}
 	}
 

@@ -1,3 +1,4 @@
+    - fixed BUG # 852993 : double urlencoding breaks redirect (gene_wood)
     - added proxy user/pass support (Robert Zwink, Monte)
 	- fixed post data array problem (stefan, Monte)
 
