@@ -200,8 +200,14 @@ class Snoopy
 		
 		settype($formvars, "array");
 
-		while(list($key,$val) = each($formvars))
-			$postdata .= urlencode($key)."=".urlencode($val)."&";
+		while(list($key,$val) = each($formvars)) {
+			if (is_array($val) || is_object($val)) {
+				while (list($cur_key, $cur_val) = each($val)) {
+					$postdata .= urlencode($cur_key)."=".urlencode($cur_val)."&";
+				}
+			} else
+				$postdata .= urlencode($key)."=".urlencode($val)."&";
+		}
 			
 		$URI_PARTS = parse_url($URI);
 		if (!empty($URI_PARTS["user"]))
