@@ -586,7 +586,7 @@ class Snoopy
 
 	function _striplinks($document)
 	{	
-		preg_match_all("'<\s*a\s+href\s*=\s*			# find <a href=
+		preg_match_all("'<\s*a\s+.*href\s*=\s*			# find <a href=
 						([\"\'])?					# find single or double quote
 						(?(1) (.*?)\\1 | ([^\s\>]+))		# if quote found, match up to next matching
 													# quote, otherwise match up to next space
@@ -832,7 +832,7 @@ class Snoopy
 		}
 
 		// have we hit our frame depth and is there frame src to fetch?
-		if(($this->_framedepth < $this->maxframes) && preg_match_all("'<frame[\s]*src[\s]*=[\'\"]?([^\'\"\>]+)'i",$results,$match))
+		if(($this->_framedepth < $this->maxframes) && preg_match_all("'<frame\s+.*src[\s]*=[\'\"]?([^\'\"\>]+)'i",$results,$match))
 		{
 			$this->results[] = $results;
 			for($x=0; $x<count($match[1]); $x++)
@@ -967,7 +967,7 @@ class Snoopy
 		}
 
 		// have we hit our frame depth and is there frame src to fetch?
-		if(($this->_framedepth < $this->maxframes) && preg_match_all("'<frame[\s].*?src[\s]*=[\'\"]?([^\'\"\>]+)'i",$results,$match))
+		if(($this->_framedepth < $this->maxframes) && preg_match_all("'<frame\s+.*src[\s]*=[\'\"]?([^\'\"\>]+)'i",$results,$match))
 		{
 			$this->results[] = $results;
 			for($x=0; $x<count($match[1]); $x++)
