@@ -4,3 +4,4 @@ Monte Ohrt <monte@ispi.net>
 Andrei Zmievski <andrei@ispi.net>
 	- miscellaneous fixes
 	- read timeout support
+	- file submission capability
