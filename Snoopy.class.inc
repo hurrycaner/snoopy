@@ -53,6 +53,7 @@ class Snoopy
 												// $rawheaders["Content-type"]="text/html";
 
 	var $maxredirs		=	5;					// http redirection depth maximum. 0 = disallow
+	var $lastredirectaddr	=	"";				// contains address of last redirected address
 	var	$offsiteok		=	true;				// allows redirection off-site
 	var $maxframes		=	0;					// frame content depth maximum. 0 = disallow
 	var $expandlinks	=	true;				// expand links to fully qualified URLs.
@@ -146,6 +147,7 @@ class Snoopy
 							{
 								/* follow the redirect */
 								$this->_redirectdepth++;
+								$this->lastredirectaddr=$this->_redirectaddr;
 								$this->fetch($this->_redirectaddr);
 							}
 						}
@@ -242,6 +244,7 @@ class Snoopy
 							{
 								/* follow the redirect */
 								$this->_redirectdepth++;
+								$this->lastredirectaddr=$this->_redirectaddr;
 								$this->submit($this->_redirectaddr,$formvars);
 							}
 						}
