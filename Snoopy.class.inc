@@ -584,7 +584,8 @@ class Snoopy
 			{
 				// get URL portion of the redirect
 				preg_match("/^(Location: |URI:)(.*)/",chop($currentHeader),$matches);
-				if(!preg_match("|".$this->host."|",$matches[2]))
+				// look for :// in the Location header to see if hostname is included
+				if(!preg_match("|\:\/\/|",$matches[2]))
 				{
 					// no host in the path, so prepend
 					$this->_redirectaddr = $URI_PARTS["scheme"]."://".$this->host.":".$this->port;
