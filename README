@@ -123,8 +123,8 @@ CLASS VARIABLES:	(default value in parenthesis)
 	$proxy_port		the proxy port to use, if any
 	$agent			the user agent to masqerade as (Snoopy v0.1)
 	$referer		referer information to pass, if any
-	$cookies		cookies pass if any
-	$rawheaders		any other header info to pass, if any
+	$cookies		cookies to pass if any
+	$rawheaders		other header info to pass, if any
 	$maxredirs		maximum redirects to allow. 0=none allowed. (5)
 	$offsiteok		whether or not to allow redirects off-site. (true)
 	$expandlinks	whether or not to expand links to fully qualified URLs (true)
