@@ -1,3 +1,5 @@
+	- fixed problem with PHP 4.3.2 and fread() (Monte)
+
 Version 1.0
 -----------
 	- added textarea to stripform functionality (Monte)

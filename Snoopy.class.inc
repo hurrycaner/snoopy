@@ -743,6 +743,7 @@ class Snoopy
 	
 	function _httprequest($url,$fp,$URI,$http_method,$content_type="",$body="")
 	{
+		$cookie_headers = '';
 		if($this->passcookies && $this->_redirectaddr)
 			$this->setcookies();
 			
@@ -845,7 +846,14 @@ class Snoopy
 			$this->headers[] = $currentHeader;
 		}
 
-		$results = fread($fp, $this->maxlength);
+		$results = '';
+		do {
+    		$_data = fread($fp, $this->maxlength);
+    		if (strlen($_data) == 0) {
+        		break;
+    		}
+    		$results .= $_data;
+		} while(true);
 
 		if ($this->read_timeout > 0 && $this->_check_timeout($fp))
 		{
@@ -1029,7 +1037,7 @@ class Snoopy
 	{
 		for($x=0; $x<count($this->headers); $x++)
 		{
-		if(preg_match("/^set-cookie:[\s]+([^=]+)=([^;]+)/i", $this->headers[$x],$match))
+		if(preg_match('/^set-cookie:[\s]+([^=]+)=([^;]+)/i', $this->headers[$x],$match))
 			$this->cookies[$match[1]] = $match[2];
 		}
 	}
