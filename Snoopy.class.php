@@ -1152,6 +1152,7 @@ class Snoopy
 	{
 		settype($formvars, "array");
 		settype($formfiles, "array");
+		$postdata = '';
 
 		if (count($formvars) == 0 && count($formfiles) == 0)
 			return;
