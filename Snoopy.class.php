@@ -194,8 +194,11 @@ class Snoopy
 				return true;					
 				break;
 			case "https":
-				if(!$this->curl_path || (!is_executable($this->curl_path)))
+				if(!$this->curl_path)
 					return false;
+				if(function_exists("is_executable"))
+				    if (!is_executable($this->curl_path))
+				        return false;
 				$this->host = $URI_PARTS["host"];
 				if(!empty($URI_PARTS["port"]))
 					$this->port = $URI_PARTS["port"];
@@ -341,8 +344,11 @@ class Snoopy
 				return true;					
 				break;
 			case "https":
-				if(!$this->curl_path || (!is_executable($this->curl_path)))
+				if(!$this->curl_path)
 					return false;
+				if(function_exists("is_executable"))
+				    if (!is_executable($this->curl_path))
+				        return false;
 				$this->host = $URI_PARTS["host"];
 				if(!empty($URI_PARTS["port"]))
 					$this->port = $URI_PARTS["port"];
