@@ -743,14 +743,19 @@ class Snoopy
 
 		$match = preg_replace("|/[^\/\.]+\.[^\/\.]+$|","",$match[0]);
 		$match = preg_replace("|/$|","",$match);
+		$match_part = parse_url($match);
+		$match_root =
+		$match_part["scheme"]."://".$match_part["host"];
 				
 		$search = array( 	"|^http://".preg_quote($this->host)."|i",
-							"|^(?!http://)(\/)?(?!mailto:)|i",
+							"|^(\/)|i",
+							"|^(?!http://)(?!mailto:)|i",
 							"|/\./|",
 							"|/[^\/]+/\.\./|"
 						);
 						
 		$replace = array(	"",
+							$match_root."/",
 							$match."/",
 							"/",
 							"/"
