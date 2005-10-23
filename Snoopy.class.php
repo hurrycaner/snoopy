@@ -61,7 +61,7 @@ class Snoopy
 	var $maxframes		=	0;					// frame content depth maximum. 0 = disallow
 	var $expandlinks	=	true;				// expand links to fully qualified URLs.
 												// this only applies to fetchlinks()
-												// or submitlinks()
+												// submitlinks(), and submittext()
 	var $passcookies	=	true;				// pass set cookies back through redirects
 												// NOTE: this currently does not respect
 												// dates, domains or paths.
@@ -442,7 +442,8 @@ class Snoopy
 	{
 		if ($this->fetch($URI))
 		{			
-
+			if($this->lastredirectaddr)
+				$URI = $this->lastredirectaddr;
 			if(is_array($this->results))
 			{
 				for($x=0;$x<count($this->results);$x++)
@@ -522,6 +523,8 @@ class Snoopy
 	{
 		if($this->submit($URI,$formvars, $formfiles))
 		{			
+			if($this->lastredirectaddr)
+				$URI = $this->lastredirectaddr;
 			if(is_array($this->results))
 			{
 				for($x=0;$x<count($this->results);$x++)
@@ -554,6 +557,8 @@ class Snoopy
 	{
 		if($this->submit($URI,$formvars, $formfiles))
 		{			
+			if($this->lastredirectaddr)
+				$URI = $this->lastredirectaddr;
 			if(is_array($this->results))
 			{
 				for($x=0;$x<count($this->results);$x++)
