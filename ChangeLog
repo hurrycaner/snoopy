@@ -1,4 +1,10 @@
-    - fixed BUG # 1097134 : Undefined URI_PARTS["path"] generates Notice
+Version 1.2.1
+-----------
+    - fixed potential security issue with unchecked variables being passed to exec (for https with curl) (gene_wood)
+    - fixed BUG # 1086830 : submitlinks,fetchlinks and submittext expandlinks with the URI of the original page not the refreshed page (gene_wood)
+    - fixed BUG # 1077870 : Snoopy can't deal with multiple spaces in a refresh tag (gene_wood)
+    - fixed BUG # 864047 : Root relative links are treated as relative (gene_wood)
+    - fixed BUG # 1097134 : Undefined URI_PARTS["path"] generates Notice (gene_wood)
 
 Version 1.2
 -----------
