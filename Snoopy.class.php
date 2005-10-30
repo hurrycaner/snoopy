@@ -863,7 +863,7 @@ class Snoopy
 			if(preg_match("/^(Location:|URI:)/i",$currentHeader))
 			{
 				// get URL portion of the redirect
-				preg_match("/^(Location:|URI:)[ ]+(.*)/",chop($currentHeader),$matches);
+				preg_match("/^(Location:|URI:)[ ]+(.*)/i",chop($currentHeader),$matches);
 				// look for :// in the Location header to see if hostname is included
 				if(!preg_match("|\:\/\/|",$matches[2]))
 				{
