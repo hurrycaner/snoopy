@@ -793,8 +793,12 @@ class Snoopy
 		$headers = $http_method." ".$url." ".$this->_httpversion."\r\n";		
 		if(!empty($this->agent))
 			$headers .= "User-Agent: ".$this->agent."\r\n";
-		if(!empty($this->host) && !isset($this->rawheaders['Host']))
-			$headers .= "Host: ".$this->host."\r\n";
+		if(!empty($this->host) && !isset($this->rawheaders['Host'])) {
+			$headers .= "Host: ".$this->host;
+			if(!empty($this->port))
+				$headers .= ":".$this->port;
+			$headers .= "\r\n";
+		}
 		if(!empty($this->accept))
 			$headers .= "Accept: ".$this->accept."\r\n";
 		if(!empty($this->referer))
@@ -955,7 +959,10 @@ class Snoopy
 		if(!empty($this->agent))
 			$headers[] = "User-Agent: ".$this->agent;
 		if(!empty($this->host))
-			$headers[] = "Host: ".$this->host;
+			if(!empty($this->port))
+				$headers[] = "Host: ".$this->host.":".$this->port;
+			else
+				$headers[] = "Host: ".$this->host;
 		if(!empty($this->accept))
 			$headers[] = "Accept: ".$this->accept;
 		if(!empty($this->referer))
