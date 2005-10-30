@@ -1,3 +1,9 @@
+Version 1.2.2
+-----------
+    - incorporated PATCH # 985470 : pass port information in http 1.1 Host header ( http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.23 ) (gene_wood)
+    - fixed BUG # 1110049 : redirect is case sensitive
+    - fixed bug in security bugfix from 1.2.1 (gene_wood, kellan, zaruba)
+
 Version 1.2.1
 -----------
     - fixed potential security issue with unchecked variables being passed to exec (for https with curl) (gene_wood)
