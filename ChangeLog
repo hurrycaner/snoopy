@@ -1,3 +1,9 @@
+Version 1.2.3
+-----------
+    - updated the version variable in the code to reflect the new version number
+    - fixed a typo that I introduced in 1.2.2 (the first character of the file is a "z" (gene_wood, Marc Desrousseaux, Jan Pedersen)
+    - fixed BUG # 1328793 : fetch is case sensetive when it comes to the scheme (http / https) (gene_wood)
+
 Version 1.2.2
 -----------
     - incorporated PATCH # 985470 : pass port information in http 1.1 Host header ( http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.23 ) (gene_wood)
