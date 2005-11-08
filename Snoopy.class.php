@@ -1,4 +1,4 @@
-z<?php
+<?php
 
 /*************************************************
 
@@ -48,7 +48,7 @@ class Snoopy
 	var $proxy_user		=	"";					// proxy user to use
 	var $proxy_pass		=	"";					// proxy password to use
 	
-	var $agent			=	"Snoopy v1.01";		// agent we masquerade as
+	var $agent			=	"Snoopy v1.2.3";	// agent we masquerade as
 	var	$referer		=	"";					// referer info to pass
 	var $cookies		=	array();			// array of cookies to pass
 												// $cookies["username"]="joe";
@@ -140,7 +140,7 @@ class Snoopy
 		if (empty($URI_PARTS["path"]))
 			$URI_PARTS["path"] = '';
 				
-		switch($URI_PARTS["scheme"])
+		switch(strtolower($URI_PARTS["scheme"]))
 		{
 			case "http":
 				$this->host = $URI_PARTS["host"];
@@ -292,7 +292,7 @@ class Snoopy
 		if (empty($URI_PARTS["path"]))
 			$URI_PARTS["path"] = '';
 
-		switch($URI_PARTS["scheme"])
+		switch(strtolower($URI_PARTS["scheme"]))
 		{
 			case "http":
 				$this->host = $URI_PARTS["host"];
