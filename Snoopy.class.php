@@ -994,12 +994,11 @@ class Snoopy
 			$headers[] = "Authorization: BASIC ".base64_encode($this->user.":".$this->pass);
 			
 		for($curr_header = 0; $curr_header < count($headers); $curr_header++) {
-			$safer_header = strtr( $headers[$curr_header], "\"", " " );
-			$cmdline_params .= " -H \"".$safer_header."\"";
+			$cmdline_params .= " -H \"".escapeshellcmd($headers[$curr_header])."\"";
 		}
 		
 		if(!empty($body))
-			$cmdline_params .= " -d \"$body\"";
+			$cmdline_params .= " -d \"".escapeshellcmd($body)."\"";
 		
 		if($this->read_timeout > 0)
 			$cmdline_params .= " -m ".$this->read_timeout;
