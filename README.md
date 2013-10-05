@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 NAME:
 
 	Snoopy - the PHP net client v1.2.4
@@ -260,3 +261,9 @@ THANKS:
 	Andrei Zmievski <andrei@ispi.net> implementing time out functionality
 	Patric Sandelin <patric@kajen.com> help with fetchform debugging
 	Carmelo <carmelo@meltingsoft.com> misc bug fixes with frames
+=======
+snoopy
+======
+
+Snoopy is a PHP class that simulates a web browser. It automates the task of retrieving web page content and posting forms, for example.
+>>>>>>> 66e2962be5a5ddb4fbd22478497969753da678de
