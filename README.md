@@ -1,10 +1,9 @@
-<<<<<<< HEAD
-NAME:
+# NAME:
 
 	Snoopy - the PHP net client v1.2.4
 	
-SYNOPSIS:
-
+# SYNOPSIS:
+```php
 	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
 	
@@ -33,15 +32,15 @@ SYNOPSIS:
 
 	$snoopy->fetchform("http://www.altavista.com");
 	print $snoopy->results;
+```
+# DESCRIPTION:
 
-DESCRIPTION:
-
-	What is Snoopy?
+##	What is Snoopy?
 	
 	Snoopy is a PHP class that simulates a web browser. It automates the
 	task of retrieving web page content and posting forms, for example.
 
-	Some of Snoopy's features:
+##	Some of Snoopy's features:
 	
 	* easily fetch the contents of a web page
 	* easily fetch the text from a web page (strip html tags)
@@ -56,13 +55,13 @@ DESCRIPTION:
 	* supports passing cookies on redirects (added v0.92)
 	
 	
-REQUIREMENTS:
+# REQUIREMENTS:
 
 	Snoopy requires PHP with PCRE (Perl Compatible Regular Expressions),
 	which should be PHP 3.0.9 and up. For read timeout support, it requires
 	PHP 4 Beta 4 or later. Snoopy was developed and tested with PHP 3.0.12.
 
-CLASS METHODS:
+# CLASS METHODS:
 
 	fetch($URI)
 	-----------
@@ -116,8 +115,8 @@ CLASS METHODS:
 	converted to their fully qualified URL form.
 
 
-CLASS VARIABLES:	(default value in parenthesis)
-
+# CLASS VARIABLES:	(default value in parenthesis)
+```php
 	$host			the host to connect to
 	$port			the port to connect to
 	$proxy_host		the proxy host to use, if any
@@ -143,13 +142,13 @@ CLASS VARIABLES:	(default value in parenthesis)
 	$status			http status of fetch
 	$temp_dir		temp directory that the webserver can write to. (/tmp)
 	$curl_path		system path to cURL binary, set to false if none
-	
+```	
 
-EXAMPLES:
+# EXAMPLES:
 
 	Example: 	fetch a web page and display the return headers and
 				the contents of the page (html-escaped):
-	
+```php	
 	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
 	
@@ -193,12 +192,12 @@ EXAMPLES:
 	}
 	else
 		echo "error fetching document: ".$snoopy->error."\n";
-
+```
 
 
 	Example:	showing functionality of all the variables:
 	
-
+```php
 	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
 
@@ -230,10 +229,11 @@ EXAMPLES:
 	}
 	else
 		echo "error fetching document: ".$snoopy->error."\n";
-
+```
 
 	Example: 	fetched framed content and display the results
-	
+
+```php	
 	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
 	
@@ -247,23 +247,17 @@ EXAMPLES:
 	}
 	else
 		echo "error fetching document: ".$snoopy->error."\n";
+```
 
-
-COPYRIGHT:
+# COPYRIGHT:
 	Copyright(c) 1999,2000 ispi. All rights reserved.
 	This software is released under the GNU General Public License.
 	Please read the disclaimer at the top of the Snoopy.class.php file.
 
 
-THANKS:
+# THANKS:
 	Special Thanks to:
 	Peter Sorger <sorgo@cool.sk> help fixing a redirect bug
 	Andrei Zmievski <andrei@ispi.net> implementing time out functionality
 	Patric Sandelin <patric@kajen.com> help with fetchform debugging
 	Carmelo <carmelo@meltingsoft.com> misc bug fixes with frames
-=======
-snoopy
-======
-
-Snoopy is a PHP class that simulates a web browser. It automates the task of retrieving web page content and posting forms, for example.
->>>>>>> 66e2962be5a5ddb4fbd22478497969753da678de
