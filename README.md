@@ -1,121 +1,104 @@
-# NAME:
-
-	Snoopy - the PHP net client v1.2.4
+## NAME:
+Snoopy - the PHP net client v1.2.4
 	
-# SYNOPSIS:
+## SYNOPSIS:
 ```php
-	include "Snoopy.class.php";
-	$snoopy = new Snoopy;
-	
-	$snoopy->fetchtext("http://www.php.net/");
-	print $snoopy->results;
-	
-	$snoopy->fetchlinks("http://www.phpbuilder.com/");
-	print $snoopy->results;
-	
-	$submit_url = "http://lnk.ispi.net/texis/scripts/msearch/netsearch.html";
-	
-	$submit_vars["q"] = "amiga";
-	$submit_vars["submit"] = "Search!";
-	$submit_vars["searchhost"] = "Altavista";
-		
-	$snoopy->submit($submit_url,$submit_vars);
-	print $snoopy->results;
-	
-	$snoopy->maxframes=5;
-	$snoopy->fetch("http://www.ispi.net/");
-	echo "<PRE>\n";
-	echo htmlentities($snoopy->results[0]); 
-	echo htmlentities($snoopy->results[1]); 
-	echo htmlentities($snoopy->results[2]); 
-	echo "</PRE>\n";
+include "Snoopy.class.php";
+$snoopy = new Snoopy;
 
-	$snoopy->fetchform("http://www.altavista.com");
-	print $snoopy->results;
+$snoopy->fetchtext("http://www.php.net/");
+print $snoopy->results;
+
+$snoopy->fetchlinks("http://www.phpbuilder.com/");
+print $snoopy->results;
+
+$submit_url = "http://lnk.ispi.net/texis/scripts/msearch/netsearch.html";
+
+$submit_vars["q"] = "amiga";
+$submit_vars["submit"] = "Search!";
+$submit_vars["searchhost"] = "Altavista";
+	
+$snoopy->submit($submit_url,$submit_vars);
+print $snoopy->results;
+
+$snoopy->maxframes=5;
+$snoopy->fetch("http://www.ispi.net/");
+echo "<PRE>\n";
+echo htmlentities($snoopy->results[0]); 
+echo htmlentities($snoopy->results[1]); 
+echo htmlentities($snoopy->results[2]); 
+echo "</PRE>\n";
+$snoopy->fetchform("http://www.altavista.com");
+print $snoopy->results;
 ```
-# DESCRIPTION:
 
-##	What is Snoopy?
-	
-	Snoopy is a PHP class that simulates a web browser. It automates the
-	task of retrieving web page content and posting forms, for example.
+## DESCRIPTION:
 
-##	Some of Snoopy's features:
+###	What is Snoopy?
 	
-	* easily fetch the contents of a web page
-	* easily fetch the text from a web page (strip html tags)
-	* easily fetch the the links from a web page
-	* supports proxy hosts
-	* supports basic user/pass authentication
-	* supports setting user_agent, referer, cookies and header content
-	* supports browser redirects, and controlled depth of redirects
-	* expands fetched links to fully qualified URLs (default)
-	* easily submit form data and retrieve the results
-	* supports following html frames (added v0.92)
-	* supports passing cookies on redirects (added v0.92)
-	
-	
-# REQUIREMENTS:
+Snoopy is a PHP class that simulates a web browser. It automates the
+task of retrieving web page content and posting forms, for example.
 
-	Snoopy requires PHP with PCRE (Perl Compatible Regular Expressions),
-	which should be PHP 3.0.9 and up. For read timeout support, it requires
-	PHP 4 Beta 4 or later. Snoopy was developed and tested with PHP 3.0.12.
-
-# CLASS METHODS:
-
-	fetch($URI)
-	-----------
+###	Some of Snoopy's features:
 	
-	This is the method used for fetching the contents of a web page.
-	$URI is the fully qualified URL of the page to fetch.
-	The results of the fetch are stored in $this->results.
-	If you are fetching frames, then $this->results
-	contains each frame fetched in an array.
+* easily fetch the contents of a web page
+* easily fetch the text from a web page (strip html tags)
+* easily fetch the the links from a web page
+* supports proxy hosts
+* supports basic user/pass authentication
+* supports setting user_agent, referer, cookies and header content
+* supports browser redirects, and controlled depth of redirects
+* expands fetched links to fully qualified URLs (default)
+* easily submit form data and retrieve the results
+* supports following html frames (added v0.92)
+* supports passing cookies on redirects (added v0.92)
+	
+	
+## REQUIREMENTS:
+
+Snoopy requires PHP with PCRE (Perl Compatible Regular Expressions),
+which should be PHP 3.0.9 and up. For read timeout support, it requires
+PHP 4 Beta 4 or later. Snoopy was developed and tested with PHP 3.0.12.
+
+## CLASS METHODS:
+
+### fetch($URI)
+This is the method used for fetching the contents of a web page.
+$URI is the fully qualified URL of the page to fetch.
+The results of the fetch are stored in $this->results.
+If you are fetching frames, then $this->results
+contains each frame fetched in an array.
 		
-	fetchtext($URI)
-	---------------	
-	
-	This behaves exactly like fetch() except that it only returns
-	the text from the page, stripping out html tags and other
-	irrelevant data.		
+### fetchtext($URI)
+This behaves exactly like fetch() except that it only returns
+the text from the page, stripping out html tags and other
+irrelevant data.		
 
-	fetchform($URI)
-	---------------	
-	
-	This behaves exactly like fetch() except that it only returns
-	the form elements from the page, stripping out html tags and other
-	irrelevant data.		
+### fetchform($URI)
+This behaves exactly like fetch() except that it only returns
+the form elements from the page, stripping out html tags and other
+irrelevant data.		
 
-	fetchlinks($URI)
-	----------------
+### fetchlinks($URI)
+This behaves exactly like fetch() except that it only returns
+the links from the page. By default, relative links are
+converted to their fully qualified URL form.
 
-	This behaves exactly like fetch() except that it only returns
-	the links from the page. By default, relative links are
-	converted to their fully qualified URL form.
+### submit($URI,$formvars)
+This submits a form to the specified $URI. $formvars is an
+array of the form variables to pass.
 
-	submit($URI,$formvars)
-	----------------------
-	
-	This submits a form to the specified $URI. $formvars is an
-	array of the form variables to pass.
-		
-		
-	submittext($URI,$formvars)
-	--------------------------
+### submittext($URI,$formvars)
+This behaves exactly like submit() except that it only returns
+the text from the page, stripping out html tags and other
+irrelevant data.		
 
-	This behaves exactly like submit() except that it only returns
-	the text from the page, stripping out html tags and other
-	irrelevant data.		
+### submitlinks($URI)
+This behaves exactly like submit() except that it only returns
+the links from the page. By default, relative links are
+converted to their fully qualified URL form.
 
-	submitlinks($URI)
-	----------------
-
-	This behaves exactly like submit() except that it only returns
-	the links from the page. By default, relative links are
-	converted to their fully qualified URL form.
-
-
-# CLASS VARIABLES:	(default value in parenthesis)
+## CLASS VARIABLES:	(default value in parenthesis)
 ```php
 	$host			the host to connect to
 	$port			the port to connect to
@@ -144,10 +127,9 @@
 	$curl_path		system path to cURL binary, set to false if none
 ```	
 
-# EXAMPLES:
+## EXAMPLES:
 
-	Example: 	fetch a web page and display the return headers and
-				the contents of the page (html-escaped):
+### Fetch a web page and display the return headers and the contents of the page (html-escaped):
 ```php	
 	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
@@ -166,12 +148,10 @@
 	}
 	else
 		echo "error fetching document: ".$snoopy->error."\n";
+```
 
-
-
-	Example:	submit a form and print out the result headers
-				and html-escaped page:
-
+### submit a form and print out the result headers and html-escaped page:
+```php
 	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
 	
@@ -194,9 +174,7 @@
 		echo "error fetching document: ".$snoopy->error."\n";
 ```
 
-
-	Example:	showing functionality of all the variables:
-	
+### Showing functionality of all the variables:
 ```php
 	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
@@ -231,8 +209,7 @@
 		echo "error fetching document: ".$snoopy->error."\n";
 ```
 
-	Example: 	fetched framed content and display the results
-
+### Fetched framed content and display the results
 ```php	
 	include "Snoopy.class.php";
 	$snoopy = new Snoopy;
@@ -249,15 +226,14 @@
 		echo "error fetching document: ".$snoopy->error."\n";
 ```
 
-# COPYRIGHT:
-	Copyright(c) 1999,2000 ispi. All rights reserved.
-	This software is released under the GNU General Public License.
-	Please read the disclaimer at the top of the Snoopy.class.php file.
+## COPYRIGHT:
+Copyright(c) 1999,2000 ispi. All rights reserved.
+This software is released under the GNU General Public License.
+Please read the disclaimer at the top of the Snoopy.class.php file.
 
-
-# THANKS:
-	Special Thanks to:
-	Peter Sorger <sorgo@cool.sk> help fixing a redirect bug
-	Andrei Zmievski <andrei@ispi.net> implementing time out functionality
-	Patric Sandelin <patric@kajen.com> help with fetchform debugging
-	Carmelo <carmelo@meltingsoft.com> misc bug fixes with frames
+## THANKS:
+Special Thanks to:
+- Peter Sorger <sorgo@cool.sk> help fixing a redirect bug
+- Andrei Zmievski <andrei@ispi.net> implementing time out functionality
+- Patric Sandelin <patric@kajen.com> help with fetchform debugging
+- Carmelo <carmelo@meltingsoft.com> misc bug fixes with frames
