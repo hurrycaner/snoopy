@@ -5,7 +5,7 @@
 Snoopy - the PHP net client
 Author: Monte Ohrt <monte@ispi.net>
 Copyright (c): 1999-2008 New Digital Group, all rights reserved
-Version: 1.2.4
+Version: 1.2.5-dev
 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -42,7 +42,7 @@ class Snoopy
 	var $proxy_user		=	"";					// proxy user to use
 	var $proxy_pass		=	"";					// proxy password to use
 	
-	var $agent			=	"Snoopy v1.2.4";	// agent we masquerade as
+	var $agent			=	"Snoopy v1.2.5-dev";	// agent we masquerade as
 	var	$referer		=	"";					// referer info to pass
 	var $cookies		=	array();			// array of cookies to pass
 												// $cookies["username"]="joe";
@@ -713,13 +713,13 @@ class Snoopy
 							chr(176),
 							chr(39),
 							chr(128),
-							"ä",
-							"ö",
-							"ü",
-							"Ä",
-							"Ö",
-							"Ü",
-							"ß",
+							"Ã¤",
+							"Ã¶",
+							"Ã¼",
+							"Ã„",
+							"Ã–",
+							"Ãœ",
+							"ÃŸ",
 						);
 					
 		$text = preg_replace($search,$replace,$document);
@@ -994,12 +994,11 @@ class Snoopy
 			$headers[] = "Authorization: BASIC ".base64_encode($this->user.":".$this->pass);
 			
 		for($curr_header = 0; $curr_header < count($headers); $curr_header++) {
-			$safer_header = strtr( $headers[$curr_header], "\"", " " );
-			$cmdline_params .= " -H \"".$safer_header."\"";
+			$cmdline_params .= " -H \"".escapeshellcmd($headers[$curr_header])."\"";
 		}
 		
 		if(!empty($body))
-			$cmdline_params .= " -d \"$body\"";
+			$cmdline_params .= " -d \"".escapeshellcmd($body)."\"";
 		
 		if($this->read_timeout > 0)
 			$cmdline_params .= " -m ".$this->read_timeout;
